@@ -1,6 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Button, Text, View} from "react-native";
-import {Stack} from "expo-router";
+import {useContext, useEffect, useState} from "react";
 import {AuthenticationContext} from "../context/auth-context";
 import {
   collection,
@@ -13,8 +11,8 @@ import {
 import type {ICard} from "../types";
 import {db} from "../firebase-config";
 import {MERCHANT} from "../constants";
-import {Card} from "../components/card";
 import {Wallet} from "../components/wallet";
+import {Button, View} from "react-native";
 
 export default function Home() {
   const {user} = useContext(AuthenticationContext);
@@ -48,19 +46,11 @@ export default function Home() {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-      <Stack.Screen options={{title: "Home"}} />
-      <View style={{flex: 1}}>
-        {cards.map((card: ICard) => (
-          <Card
-            username={user.displayName}
-            count={card.count}
-            merchant={card.merchant}
-          />
-        ))}
-        <Button title="add stamp" onPress={handleStamp}></Button>
-      </View>
-      {/* <Wallet /> */}
-    </View>
+    // <View>
+    //   <Stack.Screen options={{title: "Home"}} />
+    <>
+      <Wallet cards={cards} />
+      <Button title="Stamp" onPress={handleStamp} />
+    </>
   );
 }
