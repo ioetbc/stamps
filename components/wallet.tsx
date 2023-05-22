@@ -53,7 +53,7 @@ export const Wallet = ({cards}: WalletProps) => {
                   <Text style={styles.merchant}>{card.count}</Text>
                   <View style={styles.stamps}>
                     {Array.from({length: STAMPS_PER_CARD}, (_, i) => (
-                      <Stamp checked={i <= getPoints(card.count)} />
+                      <Stamp key={i} checked={i <= getPoints(card.count)} />
                     ))}
                   </View>
                 </View>

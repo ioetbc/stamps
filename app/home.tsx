@@ -12,7 +12,9 @@ import type {ICard} from "../types";
 import {db} from "../firebase-config";
 import {MERCHANT} from "../constants";
 import {Wallet} from "../components/wallet";
-import {Button, View} from "react-native";
+import {Button} from "react-native";
+import {Stack} from "expo-router";
+import {Logo} from "../components/logo";
 
 export default function Home() {
   const {user} = useContext(AuthenticationContext);
@@ -46,9 +48,13 @@ export default function Home() {
   };
 
   return (
-    // <View>
-    //   <Stack.Screen options={{title: "Home"}} />
     <>
+      <Stack.Screen
+        options={{
+          title: "Home",
+          headerRight: () => <Logo />,
+        }}
+      />
       <Wallet cards={cards} />
       <Button title="Stamp" onPress={handleStamp} />
     </>
