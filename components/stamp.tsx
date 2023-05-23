@@ -7,7 +7,7 @@ interface StampProps {
 export const Stamp = ({checked}: StampProps) => {
   return (
     <View
-      style={[styles.stamp, {backgroundColor: checked ? "green" : "red"}]}
+      style={[styles.stamp, {backgroundColor: checked ? "green" : "inherit"}]}
     />
   );
 };
@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     borderWidth: 1,
+    borderStyle: "dashed",
     borderColor: "black",
   },
 });

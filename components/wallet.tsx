@@ -5,14 +5,11 @@ import {
   SafeAreaView,
   Dimensions,
   View,
-  Text,
 } from "react-native";
 import {ICard} from "../types";
-import {Stamp} from "./stamp";
-import {STAMPS_PER_CARD} from "../constants";
-import {getPoints} from "../utils/stamps";
+import {CARD_HEIGHT} from "../constants";
+import {Card} from "./card";
 
-const cardHeight = 250;
 const cardTitle = 45;
 const cardPadding = 45;
 const {height} = Dimensions.get("window");
@@ -26,52 +23,47 @@ export const Wallet = ({cards}: WalletProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <View style={styles.container}>
-        <View style={StyleSheet.absoluteFill}>
-          {cards.map((card, i) => {
-            const inputRange = [-cardHeight, 0];
-            const outputRange = [cardHeight * i, (cardHeight - cardTitle) * -i];
+      <Animated.ScrollView
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: true}
+        )}
+      >
+        <View style={styles.container}>
+          <View style={StyleSheet.absoluteFill}>
+            {cards.map((card, i) => {
+              const inputRange = [-CARD_HEIGHT, 0];
+              const outputRange = [
+                CARD_HEIGHT * i,
+                (CARD_HEIGHT - cardTitle) * -i,
+              ];
 
-            if (i > 0) {
-              inputRange.push(cardPadding * i);
-              outputRange.push((cardHeight - cardPadding) * -i);
-            }
+              if (i > 0) {
+                inputRange.push(cardPadding * i);
+                outputRange.push((CARD_HEIGHT - cardPadding) * -i);
+              }
 
-            const translateY = scrollY.interpolate({
-              inputRange,
-              outputRange,
-              extrapolateRight: "clamp",
-            });
+              const translateY = scrollY.interpolate({
+                inputRange,
+                outputRange,
+                extrapolateRight: "clamp",
+              });
 
-            return (
-              <Animated.View
-                key={card.merchant}
-                style={{transform: [{translateY}]}}
-              >
-                <View style={[styles.card]}>
-                  <Text style={styles.merchant}>{card.merchant}</Text>
-                  <Text style={styles.merchant}>{card.count}</Text>
-                  <View style={styles.stamps}>
-                    {Array.from({length: STAMPS_PER_CARD}, (_, i) => (
-                      <Stamp key={i} checked={i <= getPoints(card.count)} />
-                    ))}
-                  </View>
-                </View>
-              </Animated.View>
-            );
-          })}
+              return (
+                <Animated.View
+                  key={card.merchant}
+                  style={{transform: [{translateY}]}}
+                >
+                  <Card merchant={card.merchant} count={card.count} />
+                </Animated.View>
+              );
+            })}
+          </View>
         </View>
-
-        <Animated.ScrollView
-          scrollEventThrottle={16}
-          contentContainerStyle={styles.content}
-          showsVerticalScrollIndicator={false}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: scrollY}}}],
-            {useNativeDriver: true}
-          )}
-        />
-      </View>
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 };
@@ -93,14 +85,6 @@ const styles = StyleSheet.create({
   },
   content: {
     height: height * 2,
-  },
-  card: {
-    height: cardHeight,
-    backgroundColor: "yellow",
-    borderColor: "black",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 8,
   },
   merchant: {
     fontSize: 24,
