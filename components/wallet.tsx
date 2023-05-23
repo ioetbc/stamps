@@ -6,7 +6,7 @@ import {
   Dimensions,
   View,
 } from "react-native";
-import {ICard} from "../types";
+import type {ICard} from "../types";
 import {CARD_HEIGHT} from "../constants";
 import {Card} from "./card";
 

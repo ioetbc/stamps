@@ -10,7 +10,6 @@ export const Card = ({merchant, count}) => {
     <View style={[styles.card]}>
       <TouchableOpacity onPress={() => router.push(`/card/${merchant}`)}>
         <Text style={styles.merchant}>{merchant}</Text>
-        <Text style={styles.merchant}>{count}</Text>
         <View style={styles.stamps}>
           {Array.from({length: STAMPS_PER_CARD}, (_, i) => (
             <Stamp key={i} checked={i <= getPoints(count)} />

@@ -5,7 +5,7 @@ import {StyleSheet, Switch, Text, View} from "react-native";
 
 import {db} from "../../firebase-config";
 import {AuthenticationContext} from "../../context/auth-context";
-import {ICard} from "../../types";
+import type {ICard} from "../../types";
 import {Card} from "../../components/card";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {Title} from "../../components/title";
