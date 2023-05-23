@@ -1,20 +1,27 @@
-import React from "react";
-import {Stack} from "expo-router";
-import {Image, Text, View} from "react-native";
+import {useRouter, Stack} from "expo-router";
+import {AuthProvider} from "../providers/auth-provider";
+import {Plus} from "../components/logo";
 
 export default function Layout() {
+  const router = useRouter();
+
+  const handleRouteChange = () => {
+    router.push("scan");
+  };
+
   return (
-    <Stack
-      initialRouteName="home"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: "#f4511e",
-        },
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
-      }}
-    />
+    <AuthProvider>
+      <Stack
+        initialRouteName="home"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "white",
+          },
+          headerRight(props) {
+            return <Plus handlePress={handleRouteChange} />;
+          },
+        }}
+      />
+    </AuthProvider>
   );
 }

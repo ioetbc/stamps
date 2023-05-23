@@ -1,24 +1,18 @@
 import {useContext, useEffect, useState} from "react";
 import {AuthenticationContext} from "../context/auth-context";
-import {
-  collection,
-  doc,
-  increment,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
+import {collection, doc, onSnapshot} from "firebase/firestore";
+import {useRouter} from "expo-router";
 
 import type {ICard} from "../types";
 import {db} from "../firebase-config";
-import {MERCHANT} from "../constants";
 import {Wallet} from "../components/wallet";
-import {Button} from "react-native";
-import {Stack} from "expo-router";
-import {Logo} from "../components/logo";
 
 export default function Home() {
   const {user} = useContext(AuthenticationContext);
   const [cards, setCards] = useState<ICard[]>([]);
+  const router = useRouter();
+
+  console.log("wtf user", user);
 
   useEffect(() => {
     const userDocRef = doc(db, "users", user.uid);
@@ -34,29 +28,5 @@ export default function Home() {
     return () => unsubscribe();
   }, [user.uid]);
 
-  const handleStamp = async () => {
-    const userDocRef = doc(db, "users", user.uid);
-    const merchantDocRef = doc(collection(userDocRef, "merchants"), MERCHANT);
-
-    try {
-      await updateDoc(merchantDocRef, {
-        count: increment(1),
-      });
-    } catch (e) {
-      console.log("error updating document", e);
-    }
-  };
-
-  return (
-    <>
-      <Stack.Screen
-        options={{
-          title: "Home",
-          headerRight: () => <Logo />,
-        }}
-      />
-      <Wallet cards={cards} />
-      <Button title="Stamp" onPress={handleStamp} />
-    </>
-  );
+  return <Wallet cards={cards} />;
 }

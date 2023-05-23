@@ -15,6 +15,14 @@ module.exports = {
     ios: {
       bundleIdentifier: "com.ioetbc.stamps",
     },
+    plugins: [
+      [
+        "expo-barcode-scanner",
+        {
+          cameraPermission: `Allow [App name] to use your camera?`,
+        },
+      ],
+    ],
     extra: {
       IOS_CLIENT_ID: process.env.IOS_CLIENT_ID,
       ANDROID_CLIENT_ID: process.env.ANDROID_CLIENT_ID,
